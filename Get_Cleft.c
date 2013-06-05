@@ -32,6 +32,7 @@ struct tCleftStructure{
   float   volume;
   //int   num_gpoints;
   int     label;
+  int     id;
   int     num_spheres;
   float   center[3];
   float   effrad;
@@ -190,10 +191,18 @@ int main(int argc, char *argv[]){
   get_clefts();
 
   assign_atoms_to_clefts();
-
+  
   //printf("all right so far!\n");
   //PAUSE;
-
+  
+  // assign an incremental id to clefts
+  int id=1;
+  c=clefts;
+  do{
+	  c->id = id++;
+	  c=c->next;
+  }while(c != clefts);
+  
   if(top_clefts > 0){
     c=clefts;
 
@@ -487,15 +496,15 @@ void output_spheres_in_cleft(tCleft c){
   tSphere s;
   FILE *outfile_ptr;
   char filename[100];
-  static int i=1;
   //int pdb=1;
   
-  sprintf(filename,"%s_sph_%d.pdb",out_base,i++);
+  //sprintf(filename,"%s_sph_%d.pdb",out_base,c->label);
+  sprintf(filename,"%s_sph_%d.pdb",out_base,c->id);
   outfile_ptr = fopen(filename, "w");
   if(outfile_ptr == NULL){
     fprintf(stderr, "ERROR: unable to open output file %s for write\n",filename);
     exit(8);
-  }  
+  }
   // if(pdb == 0){
   //  fprintf(outfile_ptr,"radius  x-coor    y-coor   z-coor\n");
   //    s=c->start;
@@ -513,7 +522,7 @@ void output_spheres_in_cleft(tCleft c){
     
     do{    
       fprintf(outfile_ptr,"ATOM  %5d  C   SPH Z   1    ",s->inum);
-      for(i=0;i<3;i++) fprintf(outfile_ptr,"%8.3f",s->center[i]);
+      for(int j=0;j<3;j++) fprintf(outfile_ptr,"%8.3f",s->center[j]);
       fprintf(outfile_ptr,"  1.00  %3.2f ",s->radius);
       fprintf(outfile_ptr,"\n");
       s=s->next;
@@ -536,7 +545,8 @@ void output_atoms_in_interaction_model_cleft(tCleft c, tRes residue){
 
   temp_lines[0]='\0';
 
-  sprintf(filename,"%s_clf_%d_IM.pdb",out_base,c->label);
+  //sprintf(filename,"%s_clf_%d_IM.pdb",out_base,c->label);
+  sprintf(filename,"%s_clf_%d_IM.pdb",out_base,c->id);
   //printf("filename for IM cleft: %s\n",filename);
   //PAUSE;
   outfile_ptr = fopen(filename, "w");
@@ -632,7 +642,8 @@ void output_atoms_in_cleft(tCleft c){
 
   temp_lines[0]='\0';
 
-  sprintf(filename,"%s_clf_%d.pdb",out_base,c->label);
+  //sprintf(filename,"%s_clf_%d.pdb",out_base,c->label);
+  sprintf(filename,"%s_clf_%d.pdb",out_base,c->id);
   outfile_ptr = fopen(filename, "w");
   if(outfile_ptr == NULL){
     fprintf(stderr, "ERROR: unable to open output file %s for write\n",filename);
