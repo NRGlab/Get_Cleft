@@ -144,6 +144,7 @@ int main(int argc, char *argv[]){
 
   tCleft c;
   tRes res;
+  int id=1;
   //tRes  tmpresids=NULL;
   //tAtom tmpatoms=NULL;
 
@@ -196,7 +197,6 @@ int main(int argc, char *argv[]){
   //PAUSE;
   
   // assign an incremental id to clefts
-  int id=1;
   c=clefts;
   do{
 	  c->id = id++;
@@ -496,6 +496,7 @@ void output_spheres_in_cleft(tCleft c){
   tSphere s;
   FILE *outfile_ptr;
   char filename[100];
+  int j;
   //int pdb=1;
   
   //sprintf(filename,"%s_sph_%d.pdb",out_base,c->label);
@@ -522,7 +523,7 @@ void output_spheres_in_cleft(tCleft c){
     
     do{    
       fprintf(outfile_ptr,"ATOM  %5d  C   SPH Z   1    ",s->inum);
-      for(int j=0;j<3;j++) fprintf(outfile_ptr,"%8.3f",s->center[j]);
+      for(j=0;j<3;j++) fprintf(outfile_ptr,"%8.3f",s->center[j]);
       fprintf(outfile_ptr,"  1.00  %3.2f ",s->radius);
       fprintf(outfile_ptr,"\n");
       s=s->next;
