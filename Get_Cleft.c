@@ -340,6 +340,7 @@ void get_contacting_chains(char filename[]){
   while (fgets(buffer, sizeof(buffer),infile_ptr)){
     for(i=0;i<6;i++) field[i]=buffer[i];
     field[6]='\0';
+    
     if(strcmp(field,"ATOM  ") == 0){
       for(i=0;i<3;i++) rnam[i]=buffer[i+17];
       rnam[3]='\0';
@@ -1283,13 +1284,43 @@ void read_commandline(int argc, char *argv[]){
 
 	  }else if(strcmp(argv[i],"-a")==0 || strcmp(argv[i],"-i")==0 || strcmp(argv[i],"-b")==0){
 		  // XXXNNNNAB
-		  // XXX = required %3s 3 letter code
+		  // XXX = required %3s 3 letter code (- to add space for shorter residue name)
 		  // NNNN = integer, any length residue number
 		  // A = chain id, '-' for blank required
 		  // B = altloc id, '-' for blank required
 		  for(j=0;j<3;j++) anchor_nam[j]=argv[i+1][j];
 		  anchor_nam[3]='\0';
-		  for(j=0;j<3;j++) if(anchor_nam[j]=='_') anchor_nam[j]=' ';
+		  
+          // The following block of code is used to manage spaces in residue names (spaces must be before characters !)
+          int nSpaces = 0;
+          for(j=0;j<3;j++)
+          {
+            if(anchor_nam[j]=='-')
+            {
+                nSpaces++;
+                anchor_nam[j]=' ';
+            }
+          }
+          switch(nSpaces)
+          {
+            case 0: break;
+            case 1: 
+                if(anchor_nam[0] != ' ' && anchor_nam[2] == ' ')
+                {
+                    anchor_nam[2] = anchor_nam[1];
+                    anchor_nam[1] = anchor_nam[0];
+                    anchor_nam[0] = ' ';
+                }
+                break;
+            case 2:
+                j=0;
+                while(anchor_nam[j] == ' ') j++;
+                anchor_nam[2] = anchor_nam[j];
+                anchor_nam[1] = ' ';
+                anchor_nam[0] = ' ';
+                break;
+          }
+          
 		  
 		  for(j=0;j<(int)(strlen(argv[i+1])-1);j++) helper[j]=argv[i+1][3+j];
 		  helper[j]='\0';
@@ -1351,9 +1382,14 @@ void read_commandline(int argc, char *argv[]){
     else {
       alt=anchor_alt;
     }
-
+    char anchor_nam_copy[4];
+    for(int k=0;k<4;k++)
+    {
+        if (anchor_nam[k] == ' ') anchor_nam_copy[k] = '_';
+        else anchor_nam_copy[k] = anchor_nam[k];
+    }
     sprintf(out_base,"%s_%s%d%c%c",outbase,
-	    anchor_nam,anchor_num,chain,alt);
+	    anchor_nam_copy,anchor_num,chain,alt);
   }else{
     sprintf(out_base,"%s",outbase);
     if(chn_counter > -1){
