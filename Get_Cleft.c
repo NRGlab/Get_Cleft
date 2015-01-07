@@ -1385,7 +1385,7 @@ void read_commandline(int argc, char *argv[]){
     char anchor_nam_copy[4];
     for(int k=0;k<4;k++)
     {
-        if (anchor_nam[k] == ' ') anchor_nam_copy[k] = '_';
+        if (anchor_nam[k] == ' ') anchor_nam_copy[k] = '-';
         else anchor_nam_copy[k] = anchor_nam[k];
     }
     sprintf(out_base,"%s_%s%d%c%c",outbase,
