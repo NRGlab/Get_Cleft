@@ -1197,7 +1197,7 @@ float dist3d(float a[], float b[]){
 /*        1         2         3         4         5         6         7*/
 /***********************************************************************/
 void read_commandline(int argc, char *argv[]){
-  int   i,j;
+  int   i,j,k;
   char  usage[3000];
   char  helper[10];
   char  chain,alt;
@@ -1418,7 +1418,7 @@ void read_pdb(char file[]){
   char  buffer[81];         // a line from the INPUT file
   char  coor_char[10];      // string used to read the coordinates
   char  field[7];
-  int   i,j,k;
+  int   i,j;
   tAtom a,b;
   tRes  r;
   int  rnum;
