@@ -1198,6 +1198,7 @@ float dist3d(float a[], float b[]){
 /***********************************************************************/
 void read_commandline(int argc, char *argv[]){
   int   i,j,k;
+  int nSpaces;
   char  usage[3000];
   char  helper[10];
   char  chain,alt;
@@ -1284,7 +1285,8 @@ void read_commandline(int argc, char *argv[]){
 		  chn_counter++;
 		  chn[chn_counter]=argv[++i][0];
 
-	  }else if(strcmp(argv[i],"-a")==0 || strcmp(argv[i],"-i")==0 || strcmp(argv[i],"-b")==0){
+	  }else if(strcmp(argv[i],"-a")==0 || strcmp(argv[i],"-i")==0 || strcmp(argv[i],"-b")==0)
+    {
 		  // XXXNNNNAB
 		  // XXX = required %3s 3 letter code (- to add space for shorter residue name)
 		  // NNNN = integer, any length residue number
@@ -1293,35 +1295,35 @@ void read_commandline(int argc, char *argv[]){
 		  for(j=0;j<3;j++) anchor_nam[j]=argv[i+1][j];
 		  anchor_nam[3]='\0';
 		  
-          // The following block of code is used to manage spaces in residue names (spaces must be before characters !)
-          int nSpaces = 0;
-          for(j=0;j<3;j++)
-          {
-            if(anchor_nam[j]=='-')
+      // The following block of code is used to manage spaces in residue names (spaces must be before characters !)
+      nSpaces = 0;
+      for(j=0;j<3;j++)
+      {
+        if(anchor_nam[j]=='-')
+        {
+            nSpaces++;
+            anchor_nam[j]=' ';
+        }
+      }
+      switch(nSpaces)
+      {
+        case 0: break;
+        case 1: 
+            if(anchor_nam[0] != ' ' && anchor_nam[2] == ' ')
             {
-                nSpaces++;
-                anchor_nam[j]=' ';
-            }
-          }
-          switch(nSpaces)
-          {
-            case 0: break;
-            case 1: 
-                if(anchor_nam[0] != ' ' && anchor_nam[2] == ' ')
-                {
-                    anchor_nam[2] = anchor_nam[1];
-                    anchor_nam[1] = anchor_nam[0];
-                    anchor_nam[0] = ' ';
-                }
-                break;
-            case 2:
-                j=0;
-                while(anchor_nam[j] == ' ') j++;
-                anchor_nam[2] = anchor_nam[j];
-                anchor_nam[1] = ' ';
+                anchor_nam[2] = anchor_nam[1];
+                anchor_nam[1] = anchor_nam[0];
                 anchor_nam[0] = ' ';
-                break;
-          }
+            }
+            break;
+        case 2:
+            j=0;
+            while(anchor_nam[j] == ' ') j++;
+            anchor_nam[2] = anchor_nam[j];
+            anchor_nam[1] = ' ';
+            anchor_nam[0] = ' ';
+            break;
+      }
           
 		  
 		  for(j=0;j<(int)(strlen(argv[i+1])-1);j++) helper[j]=argv[i+1][3+j];
