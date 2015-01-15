@@ -98,6 +98,7 @@ int   output_extra_atoms;
 int   output_spheres;
 
 char  anchor_nam[4];
+char  anchor_nam_copy[4];
 int   anchor_num;
 char  anchor_chn;
 int   anchor_flg;
@@ -1201,7 +1202,8 @@ void read_commandline(int argc, char *argv[]){
   char  helper[10];
   char  chain,alt;
   char  outbase[100];
-
+  char  anchor_nam_copy[4];
+  
   strcpy(usage,"Usage:\n      Get_Cleft [obligatory-arguments list] ");
   strcat(usage,"[optional-arguments list]\n\n");
   strcat(usage,"Obligatory Arguments:\n");
@@ -1382,7 +1384,6 @@ void read_commandline(int argc, char *argv[]){
     else {
       alt=anchor_alt;
     }
-    char anchor_nam_copy[4];
     for(int k=0;k<4;k++)
     {
         if (anchor_nam[k] == ' ') anchor_nam_copy[k] = '-';
