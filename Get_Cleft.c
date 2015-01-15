@@ -1203,7 +1203,7 @@ void read_commandline(int argc, char *argv[]){
   char  chain,alt;
   char  outbase[100];
   char  anchor_nam_copy[4];
-  
+
   strcpy(usage,"Usage:\n      Get_Cleft [obligatory-arguments list] ");
   strcat(usage,"[optional-arguments list]\n\n");
   strcat(usage,"Obligatory Arguments:\n");
@@ -1384,7 +1384,7 @@ void read_commandline(int argc, char *argv[]){
     else {
       alt=anchor_alt;
     }
-    for(int k=0;k<4;k++)
+    for(k=0;k<4;k++)
     {
         if (anchor_nam[k] == ' ') anchor_nam_copy[k] = '-';
         else anchor_nam_copy[k] = anchor_nam[k];
@@ -1418,7 +1418,7 @@ void read_pdb(char file[]){
   char  buffer[81];         // a line from the INPUT file
   char  coor_char[10];      // string used to read the coordinates
   char  field[7];
-  int   i,j;
+  int   i,j,k;
   tAtom a,b;
   tRes  r;
   int  rnum;
