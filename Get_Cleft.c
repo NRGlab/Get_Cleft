@@ -1418,7 +1418,7 @@ void read_pdb(char file[]){
   char  buffer[81];         // a line from the INPUT file
   char  coor_char[10];      // string used to read the coordinates
   char  field[7];
-  int   i,j;
+  int   i,j,k;
   tAtom a,b;
   tRes  r;
   int  rnum;
