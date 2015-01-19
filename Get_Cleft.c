@@ -1187,7 +1187,7 @@ float dist3d(float a[], float b[]){
   for(i=0;i<3;i++){
     dist += (a[i]-b[i])*(a[i]-b[i]);
   }
-  dist = (float)sqrt(dist);
+  dist = (float)sqrtf(dist);
 
   return dist;
 }
