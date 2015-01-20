@@ -11,7 +11,7 @@
 #include <limits.h>
 #include <time.h>
 
-
+#define MAX_PATH 250
 #define PAUSE fgets(stp,sizeof(stp),stdin) // shortcut for pausing
 
 #define SWAP(t,x,y)	{ t = x; x = y; y = t; }

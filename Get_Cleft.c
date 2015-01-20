@@ -86,8 +86,8 @@ tRes    resids  = NULL;
 int   num_spheres=0;
 int   top_clefts=0;
 
-char  pdb_base[250];
-char  out_base[250];
+char  pdb_base[MAX_PATH];
+char  out_base[MAX_PATH];
 
 int   output_het;
 int   het_whole;
@@ -108,7 +108,7 @@ float contact_threshold;
 int   output_im_cleft;
 int   output_omim_clefts;
 
-char  pdb_file[250];
+char  pdb_file[MAX_PATH];
 char  chn[10];
 int   chn_counter;
 double pi;
@@ -401,7 +401,7 @@ void print_atom_contacts(tRes residue){
   tRes r;
   tAtom a,b;
   FILE *outfile_ptr;
-  char filename[250];
+  char filename[MAX_PATH];
   char chn,alt;
   int flag;
   int  print_residue_flag;
@@ -497,7 +497,7 @@ void print_atom_contacts(tRes residue){
 void output_spheres_in_cleft(tCleft c){
   tSphere s;
   FILE *outfile_ptr;
-  char filename[250];
+  char filename[MAX_PATH];
   int j;
   //int pdb=1;
   
@@ -543,7 +543,7 @@ void output_atoms_in_interaction_model_cleft(tCleft c, tRes residue){
   tRes r;
   //float d_thres=0.30f;
   FILE *outfile_ptr;
-  char filename[250];
+  char filename[MAX_PATH];
   char temp_lines[SIZE_TEMP_LINES];
 
   temp_lines[0]='\0';
@@ -640,7 +640,7 @@ void output_atoms_in_cleft(tCleft c){
   tRes r;
   //float d_thres=0.30f;
   FILE *outfile_ptr;
-  char filename[250];
+  char filename[MAX_PATH];
   char temp_lines[SIZE_TEMP_LINES];
 
   temp_lines[0]='\0';
@@ -1202,7 +1202,7 @@ void read_commandline(int argc, char *argv[]){
   char  usage[3000];
   char  helper[10];
   char  chain,alt;
-  char  outbase[250];
+  char  outbase[MAX_PATH];
   char  anchor_nam_copy[4];
 
   strcpy(usage,"Usage:\n      Get_Cleft [obligatory-arguments list] ");
