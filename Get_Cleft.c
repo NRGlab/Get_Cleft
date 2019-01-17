@@ -1227,7 +1227,7 @@ void read_commandline(int argc, char *argv[]){
   strcat(usage,"                   (Use \'-\' for Blank in chain and Alt loc).\n");
   strcat(usage,"-ca              : include C-alpha of residues.\n");
   strcat(usage,"-cb              : include C-beta of residues.\n");
-  strcat(usage,"-r               : include all otoms of the residue.\n");
+  strcat(usage,"-r               : include all atoms of the residue.\n");
   strcat(usage,"-s               : output cleft spheres (centre coordinates and radii).\n");
   strcat(usage,"-k [5.0]         : Threshold distance for contact definition.\n");
   strcat(usage,"-o outfile       : Output filename.\n");
