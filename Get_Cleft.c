@@ -97,6 +97,7 @@ int   cbeta;
 int   output_extra_atoms;
 int   output_spheres;
 int   output_clefts;
+int   verbose;
 
 char  anchor_nam[4];
 char  anchor_nam_copy[4];
@@ -488,7 +489,7 @@ void print_atom_contacts(tRes residue){
   }
   fclose(outfile_ptr);
   
-  return;
+  if (verbose==1) printf("ENV file written: %s\n", filename);
 }
 /***********************************************************************/
 /*        1         2         3         4         5         6         7*/
@@ -523,8 +524,8 @@ void output_spheres_in_cleft(tCleft c){
     s=c->start;
 
     fprintf(outfile_ptr,"#REMARK  PARENTFILE  %s\n", pdb_file);
-    
-    do{    
+
+    do{
       fprintf(outfile_ptr,"ATOM  %5d  C   SPH Z   1    ",s->inum);
       for(j=0;j<3;j++) fprintf(outfile_ptr,"%8.3f",s->center[j]);
       fprintf(outfile_ptr,"  1.00  %3.2f ",s->radius);
@@ -532,7 +533,7 @@ void output_spheres_in_cleft(tCleft c){
       s=s->next;
     }while(s != c->end->next);
     // }
-  return;
+  if (verbose==1) printf("SPH file written: %s\n", filename);
 }
 /***********************************************************************/
 /*        1         2         3         4         5         6         7*/
@@ -629,7 +630,7 @@ void output_atoms_in_interaction_model_cleft(tCleft c, tRes residue){
   }while(a != atoms);
   fclose(outfile_ptr);
 
-  return;
+  if (verbose==1) printf("IM file written: %s\n", filename);
 }
 /***********************************************************************/
 /*        1         2         3         4         5         6         7*/
@@ -728,13 +729,14 @@ void output_atoms_in_cleft(tCleft c){
       }while(r != resids);
     }
     fclose(outfile_ptr);
+  	if (verbose==1) printf("HET file written: %s\n", filename);
   }
   
   //printf("so far ok inside sub end\n");
   //PAUSE;
 
   
-  return;
+  if (verbose==1) printf("CLF file written: %s\n", filename);
 }
 /***********************************************************************/
 /*        1         2         3         4         5         6         7*/
@@ -1364,6 +1366,8 @@ void read_commandline(int argc, char *argv[]){
 		  output_spheres=1;
 	  }else if(strcmp(argv[i],"-nc")==0){
 	  	output_clefts=0;
+	  }else if(strcmp(argv[i],"-v")==0){
+	  	verbose=1;
 	  }else if(strcmp(argv[i],"-o")==0){
 		  strcpy(outbase,argv[++i]);
 	  }
