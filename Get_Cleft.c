@@ -96,6 +96,7 @@ int   calpha;
 int   cbeta;
 int   output_extra_atoms;
 int   output_spheres;
+int   output_clefts;
 
 char  anchor_nam[4];
 char  anchor_nam_copy[4];
@@ -208,8 +209,8 @@ int main(int argc, char *argv[]){
     c=clefts;
 
     while(c->label <= top_clefts){
-      //printf("cleft label=%d\n",c->label); 
-      output_atoms_in_cleft(c);
+      //printf("cleft label=%d\n",c->label);
+      if(output_clefts == 1) output_atoms_in_cleft(c);
       if(output_spheres == 1) output_spheres_in_cleft(c);
       c=c->next;
       
@@ -249,13 +250,13 @@ int main(int argc, char *argv[]){
 	  //}
 	  // -b
 	  if (output_omim_clefts==1){            
-	    output_atoms_in_cleft(res->ofcleft);
+	    if(output_clefts == 1) output_atoms_in_cleft(res->ofcleft);
 	    if(output_spheres == 1) output_spheres_in_cleft(res->ofcleft);
 	    output_atoms_in_interaction_model_cleft(res->ofcleft,res);
 	  }
 	  // -a
 	  else if (output_im_cleft==0){
-	    output_atoms_in_cleft(res->ofcleft);
+	    if(output_clefts == 1) output_atoms_in_cleft(res->ofcleft);
 	    if(output_spheres == 1) output_spheres_in_cleft(res->ofcleft);
 	  }
 	  // -i
@@ -273,7 +274,7 @@ int main(int argc, char *argv[]){
       printf("there are a total of %d Clefts\n",clefts->prev->label);
       do{
 	//printf("cleft label=%d\n",c->label); 
-	output_atoms_in_cleft(c);
+	if(output_clefts == 1) output_atoms_in_cleft(c);
 	if(output_spheres == 1) output_spheres_in_cleft(c);
 	c=c->next;
       }while(c != clefts);
@@ -1234,13 +1235,13 @@ void read_commandline(int argc, char *argv[]){
 
   // assignment of default values to optional parameters
   top_clefts=0;
-  sphere_lwb=1.5;
-  sphere_upb=4.0;
+  sphere_lwb=1.5f;
+  sphere_upb=4.0f;
   chn_counter=-1;
   output_het=0;
   het_whole=0;
   anchor_flg=0;
-  contact_threshold=5.0;
+  contact_threshold=5.0f;
   output_im_cleft=0;
   output_omim_clefts=0;
   output_extra_atoms=0;
@@ -1248,6 +1249,7 @@ void read_commandline(int argc, char *argv[]){
   cbeta=0;
   complete_residue=0;
   output_spheres=0;
+  output_clefts=1;
   strcpy(outbase,".");
   // copy argv values to the respective global arguments
   
@@ -1360,12 +1362,19 @@ void read_commandline(int argc, char *argv[]){
 		  cbeta=1;
 	  }else if(strcmp(argv[i],"-s")==0){
 		  output_spheres=1;
+	  }else if(strcmp(argv[i],"-nc")==0){
+	  	output_clefts=0;
 	  }else if(strcmp(argv[i],"-o")==0){
 		  strcpy(outbase,argv[++i]);
 	  }
     
   }
-  
+
+  if(output_spheres == 0 && output_clefts == 0)
+  {
+	  printf("-s is not specified whereas -nc is. It is possible no files will be written\n");
+  }
+
   if(strcmp(outbase,"") == 0){
     strcpy(outbase,pdb_base);
   }
